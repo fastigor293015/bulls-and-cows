@@ -13,11 +13,11 @@
 - Авторизация;
 - Хранение истории игр.
 
-Реализовано через EF Core Sqlite
+Реализовано через Node.js
 
 ## Пример игры
 
-<img src="https://github.com/DruzhinD/BullsAndCows/blob/master/docs/GameExample.png"  width="465" height="500">
+<img src="https://sun9-32.userapi.com/s/v1/if2/ibTORKd3SOu3yAPAmWF7Wh8FLAO6OkVN1-bh4NWzn-w5THnZmU-wRLoSPKYR3tLDRn5Q-pZfHWSe1ie2Ubm0ux06.jpg?quality=95&as=32x30,48x45,72x68,108x102,160x151,240x227,360x340,480x453,540x510,561x530&from=bu&u=xiGMkDhPqyOrdqQyQhvPR_D039pCe5m1mJbSy8YnCco&cs=561x530"  width="465" height="500">
 
 <br>
 
@@ -25,26 +25,22 @@
 
 Происходит следующим образом:
 
-1. Формируется список (массив) из 10 цифр;
-2. Случайным образом достаем 1 число;
-3. Дописываем это число в строку (генерируемую комбинацию) и удаляем из списка (массива);
-4. Выполняем шаги 2-3 до тех пор, пока длина генерируемой комбинации не станет равной той, что передана в качестве аргумента.
+1. Выполняем цикл из 4-х итераций;
+2. На каждой из итераций генерируем случайную цифру от 1 до 9, пока не получим ту, которой ещё нет в массиве;
+3. Добавляем полученную цифру в массив;
+4. В самом конце объединяем элементы массива в одну строку.
 
-```csharp
-protected string GenCombination(int length = 4)
-{
-    string combination = string.Empty; //генерируемая комбинация
-    List<int> numbers = new List<int>(10);
-    for (int i = 0; i < 10; i++)
-        numbers.Add(i);
-    Random rnd = new Random();
-
-    for (int i = 0; i < length; i++)
-    {
-        int chosenNum = numbers[rnd.Next(numbers.Count)];
-        numbers.Remove(chosenNum);
-        combination += chosenNum;
-    }
-    return combination;
-}
+```js
+const generateNumber = (length = 4) => {
+  const digitsArr = [];
+  for (let i = 0; i < length; i++) {
+    // Генерируем случайную цифру от 1 до 9, пока не получим ту, которой ещё нет в массиве
+    let digit;
+    do {
+      digit = Math.ceil(Math.random() * 8.9 + 0.1);
+    } while (digitsArr.some((value) => value === digit));
+    digitsArr.push(digit);
+  }
+  return digitsArr.join("");
+};
 ```
